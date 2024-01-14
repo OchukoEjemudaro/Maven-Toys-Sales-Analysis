@@ -14,7 +14,7 @@ This project encompasses a detailed analysis of Maven Toys' sales and inventory 
 
 The main goals of the Maven Toys Sales and Inventory project are to find the product categories that bring in the most profits and check if these categories are consistently profitable in all store locations. Additionally, aim to discover patterns and trends in sales over different time periods, identify any potential loss of sales due to out-of-stock products at specific locations, and determine the amount of money tied up in inventory at the toy stores and how long it will last.
 
-## Document Purpuse
+## Document Purpose
 
 This documentation serves as a guide for project stakeholders, providing insights into the project's objectives, data sources, data analysis, and any other relevant information. 
 
@@ -31,6 +31,15 @@ Different stakeholders within the organization could leverage these findings to 
 **4. Marketing Teams:** Marketing teams can leverage the analysis to tailor promotional strategies, especially during peak seasons, and align marketing efforts with the most profitable product categories.
 
 **5. Sales Teams:** Sales teams can benefit from understanding customer preferences, popular products, and identifying potential sales opportunities based on the analysis.
+
+## Skills Demostrated
+- Data Connection in Microsoft SQL Server
+- Data Cleaning and Processing
+- Developed a Database Schema
+- Data Analysis
+- Join
+- CTE(Common Table Expression)
+- SQL Window Functions
 
 ## Data Source
 
