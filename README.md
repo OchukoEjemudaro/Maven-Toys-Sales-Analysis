@@ -38,7 +38,7 @@ Different stakeholders within the organization could leverage these findings to 
 - Developed a Database Schema
 - Data Analysis
 - Join
-- CTE(Common Table Expression)
+- CTE (Common Table Expression)
 - SQL Window Functions
 
 ## Data Source
