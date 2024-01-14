@@ -9,7 +9,7 @@ A SQL project that aim to provide Maven Toys, a fictional chain of toy stores in
 - [Document Purpose](https://github.com/OchukoEjemudaro/Maven-Toys-Sales-Analysis#document-purpose)
 - [Use Case](https://github.com/OchukoEjemudaro/Maven-Toys-Sales-Analysis#use-case)
 - [Skills Demostrated](https://github.com/OchukoEjemudaro/Maven-Toys-Sales-Analysis#skills-demostrated)
-- [Data Soyrce](https://github.com/OchukoEjemudaro/Maven-Toys-Sales-Analysis#data-source)
+- [Data Source](https://github.com/OchukoEjemudaro/Maven-Toys-Sales-Analysis#data-source)
 - [Data Cleaning and Processing](https://github.com/OchukoEjemudaro/Maven-Toys-Sales-Analysis#data-cleaning-and-processing)
 - [Data Analysis and Insight](https://github.com/OchukoEjemudaro/Maven-Toys-Sales-Analysis#data-analysis-and-insight)
 - [Recommembdation](https://github.com/OchukoEjemudaro/Maven-Toys-Sales-Analysis#recommendation)
