@@ -312,19 +312,19 @@ This implies an inquiry into the potential revenue impact caused by the absence 
 
 To provide answer to this question, an analysis needs to be conducted to identify the following:
 
-**1. Potential Revenue:**
+**I. Potential Revenue:**
 
 This represents the total revenue potential for each location, considering the availability of all products. It offers insights into the overall revenue that each location could have generated if all products were in stock.
 
-**2. Actual Revenue:**
+**II. Actual Revenue:**
 
 This signifies the aggregate revenue generated in each location, taking into account the available products.
 
-**3. Revenue Lost During Stock Out:**
+**III. Revenue Lost During Stock Out:**
 
 This entails identifying lost revenue during periods of product unavailability. It involves quantifying the revenue that could have been generated solely from out-of-stock products if they were readily available for purchase. The inability of customers to buy these items due to stockouts translates into missed revenue opportunities, constituting lost revenue for the business.
 
-**4. Percentage of Lost Revenue:**
+**IV. Percentage of Lost Revenue:**
 
 This calculates the percentage of revenue lost as a result of product unavailability due to stockouts. This percentage is valuable because it gives stakeholders a clear understanding of how much of the potential revenue was not realized due to out-of-stock products. It helps quantify the impact of stockouts on overall sales performance, and it provides a basis for comparison across different stores.
 
