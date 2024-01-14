@@ -119,9 +119,9 @@ The first part of the question aims to identify and prioritize product categorie
 SELECT		Product_Category,
 		ROUND(SUM(Product_Profit*Tbl_Sales.Units), 0) AS Total_Profit,
 		ROUND(SUM(Product_Profit*Tbl_Sales.Units)/(SELECT SUM(Product_Profit*Tbl_Sales.Units) 
-FROM		Tbl_Products
-JOIN		Tbl_Sales
-ON		Tbl_Products.Product_ID = Tbl_Sales.Product_ID)*100,2) AS [%Profit]
+		FROM	Tbl_Products
+		JOIN	Tbl_Sales
+		ON	Tbl_Products.Product_ID = Tbl_Sales.Product_ID)*100,2) AS [%Profit]
 FROM		Tbl_Products
 JOIN		Tbl_Sales
 ON		Tbl_Products.Product_ID = Tbl_Sales.Product_ID
