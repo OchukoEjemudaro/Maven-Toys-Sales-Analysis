@@ -35,4 +35,4 @@ Different stakeholders within the organization could leverage these findings to 
 - Marketing teams can leverage the analysis to tailor promotional strategies, especially during peak seasons, and align marketing efforts with the most profitable product categories.
 
 **Sales Teams:** 
-Sales teams can benefit from understanding customer preferences, popular products, and identifying potential sales opportunities based on the analysis.
+- Sales teams can benefit from understanding customer preferences, popular products, and identifying potential sales opportunities based on the analysis.
