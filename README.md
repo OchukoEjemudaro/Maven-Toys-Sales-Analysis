@@ -181,22 +181,312 @@ ORDER BY	Store_Location
 - Electronics emerges as the dominant and most profitable category in both Airport and Commercial locations. This suggests a higher demand for electronics products in these settings, possibly driven by the traveler demographic in airports and the commercial nature of the business district.
 - The Toys category consistently appears as the top-performing category in both Downtown and Residential locations, indicating its strong market appeal in these settings.
 
+**2. Can you find any seasonal trends or patterns in the sales data?**
 
+To identify seasonal trends or patterns in the sales data, an in-depth time-based analysis was conducted to uncover seasonal trends and patterns in the sales data, aiming to gain valuable insights into the evolving behaviors, trends, and overall patterns within the dataset over time. This endeavor involved the execution of a comprehensive SQL query designed to calculate the total revenue for each month across different years, enabling a sophisticated understanding of the complex behaviors and fluctuations within the sales data throughout different years.
 
+```SQL
+--Revenue Trend Overtime
 
+SELECT		Month_Name,
+		CASE WHEN [2022] IS NULL THEN 0 ELSE [2022] END AS [2022],
+		CASE WHEN [2023] IS NULL THEN 0 ELSE [2023] END AS [2023]
+FROM
+(SELECT 	Month_Name,
+		Month_Number,
+		[Year],
+		ROUND(SUM(Product_Price*Tbl_Sales.Units), 0) AS Revenue
+FROM	 	Tbl_Products
+JOIN	  	Tbl_Sales
+ON	 	Tbl_Products.Product_ID = Tbl_Sales.Product_ID
+JOIN	  	Tbl_Stores
+ON	  	Tbl_Stores.Store_ID = Tbl_Sales.Store_ID
+GROUP BY 	Month_Name,
+		Month_Number,
+		[Year]) AS R
+PIVOT(		SUM(Revenue)
+		FOR [Year]
+		IN ( [2022], [2023])) AS PIVOT_
+ORDER BY 	Month_Number
+```
 
+|Month_Name|2022|2023|
+|----------|----|----|
+|January|542555|747196|
+|February|541352|722632|
+|March|589485|883516|
+|April|681073|827691|
+|May|672370|825319|
+|June|661980|808299|
+|July|556034|828349|
+|August|489423|660877|
+|September|585844|658194|
+|October|623874|0|
+|November|661304|0|
+|December|877204|0|
 
+**In 2022**
+- From January to December, there is a general revenue growth, reaching a peak in December at $877,204. This indicates positive consumer engagement and purchasing during this year.
+- August show a slight decline in revenue compared to the preceding months, potentially influenced by seasonal factors or changes in consumer behavior during the summer period.
+- September marks a recovery with an increase in revenue to $585,844, suggesting a potential uptick in consumer spending as the summer concludes.
+- October and November maintain stable revenue, with $623,874 and $661,304, respectively. 
+- December stands out with a significant spike in revenue, reaching $877,204. This could be attributed to increased holiday spending, festive promotions, or special events.
 
+**In 2023**
+- The first quarter of the year, from January to March, exhibits consistent revenue growth, reaching a peak in March at $883,516. This suggests positive consumer engagement and purchasing during the early months of the year.
+- April and May maintain stable revenue levels, indicating sustained consumer interest and spending during the spring season.
+- From June onwards, there is a gradual decline in revenue, reaching its lowest point in September at $658,194. This decline could be influenced by various factors such as seasonal trends, changing consumer preferences, or market dynamics.
+- October, November, and December, the recorded revenue sharply declined, ultimately reaching zero. This decline was primarily attributed to the absence of sales during this period.
 
+Following the initial examination, I conducted a comprehensive SQL query designed to thoroughly explore the dataset. An SQL query that calculate the percentage change in revenue for a specific month compared to the same period in the previous year was executed. This query helps assess how revenue in that particular month has changed over time, providing a clear understanding of the trends. The primary objective was to identify specific months where revenue exhibited either an increase or decrease compared to the corresponding months from the previous year. This detailed exploration aimed to unveil subtle patterns within the revenue dynamics over time, providing nuanced insights into the specific months that demonstrated notable changes compared to the same periods in the previous year.
 
+```SQL
+--% Change in Revenue for a Specific Month Compared to Same Period in the Previous Year.
 
+;WITH CTE
+AS
+(SELECT		Month_Name,
+		Month_Number,
+		CASE WHEN [2022] IS NULL THEN 0 ELSE [2022] END AS [2022],
+		CASE WHEN [2023] IS NULL THEN 0 ELSE [2023] END AS [2023]
+FROM
+(SELECT 	Month_Name,
+		Month_Number,
+		[Year],
+		ROUND(SUM(Product_Price*Tbl_Sales.Units), 0) AS Revenue
+FROM	 	Tbl_Products
+JOIN	  	Tbl_Sales
+ON	 	Tbl_Products.Product_ID = Tbl_Sales.Product_ID
+JOIN	  	Tbl_Stores
+ON	  	Tbl_Stores.Store_ID = Tbl_Sales.Store_ID
+GROUP BY 	Month_Name,
+		Month_Number,
+		[Year]) AS R
+PIVOT(		SUM(Revenue)
+		FOR [Year]
+		IN ( [2022], [2023])) AS PIVOT_)
+SELECT		Month_Name,
+		[2022],
+		[2023],
+		ISNULL(ROUND((([2023]-[2022])/NULLIF([2022],0))*100,2),0) AS [% Change In Revenue]
+FROM 		CTE
+ORDER BY 	Month_Number
+```
 
+|Month_Name|2022|2023|% Change in Revenue|
+|----------|----|----|-------------------|
+|January|542555|747196|37.72|
+|February|541352|722632|33.49|
+|March|589485|883516|49.88|
+|April|681073|827691|21.53|
+|May|672370|825319|22.75|
+|June|661980|808299|22.1|
+|July|556034|828349|48.97|
+|August|489423|660877|35.03|
+|September|585844|658194|12.35|
+|October|623874|0|-100|
+|November|661304|0|-100|
+|December|877204|0|-100|
 
+The revenue generated for each month, comparing 2022 to 2023, provides insights into the performance of each period:
+- The first half of the year (January, February, March, April, May, and June) experienced substantial revenue growth, with increases ranging from approximately 22% to 49.88%. These months show a positive trend in generating higher revenue compared to the same period in the previous year. Notably, March sees a significant increase of 49.88%, indicating a strong performance during this period. 
+- In the second half of the year, July and August witnessed growth, but the percentages are notably different. July's revenue increased by 48.97%, while August saw a growth of 35.03%. September still shows positive growth, but the growth rate is comparatively lower. In the last quarter of 2023, specifically in October, November, and December, the recorded revenue sharply declined, ultimately reaching zero. This decline was primarily attributed to the absence of sales during this period.
 
+**3. Are sales being lost with out-of-stock products at certain locations?**
 
+This implies an inquiry into the potential revenue impact caused by the absence of available products in specific locations. It seeks to understand the financial losses incurred when products are unavailable or out of stock in certain location. When customers are unable to purchase desired items due to stockouts, the business miss out on potential sales opportunities, resulting in lost revenue.
 
+To provide answer to this question, an analysis needs to be conducted to identify the following:
 
+**1. Potential Revenue:**
 
+This represents the total revenue potential for each location, considering the availability of all products. It offers insights into the overall revenue that each location could have generated if all products were in stock.
+
+**2. Actual Revenue:**
+
+This signifies the aggregate revenue generated in each location, taking into account the available products.
+
+**3. Revenue Lost During Stock Out:**
+
+This entails identifying lost revenue during periods of product unavailability. It involves quantifying the revenue that could have been generated solely from out-of-stock products if they were readily available for purchase. The inability of customers to buy these items due to stockouts translates into missed revenue opportunities, constituting lost revenue for the business.
+
+**4. Percentage of Lost Revenue:**
+
+This calculates the percentage of revenue lost as a result of product unavailability due to stockouts. This percentage is valuable because it gives stakeholders a clear understanding of how much of the potential revenue was not realized due to out-of-stock products. It helps quantify the impact of stockouts on overall sales performance, and it provides a basis for comparison across different stores.
+
+All of these contribute to evaluating the influence of out-of-stock products on the overall sales performance in each location.
+
+**_NOTE_**: Sales table contain some certain products but these products are not listed in the inventory table, therefore, they are categorized as unavailable products. Despite their absence from the inventory table, these products play a crucial role in this analysis. Their inclusion is essential for calculating the total revenue lost during stock out.
+
+```SQL
+-- This Query Assesses the Impact of Out-of-Stock Product on Overall Sales in Each Store Location.
+
+WITH 
+
+Potential_Revenue
+AS
+(SELECT		Store_Location,
+		ROUND(SUM(Tbl_Products.Product_Price*Tbl_Sales.Units),0) AS Potential_Revenue
+FROM		Tbl_Sales
+JOIN		Tbl_Products
+ON		Tbl_Sales.Product_ID = Tbl_Products.Product_ID
+JOIN		Tbl_Stores
+ON		Tbl_Stores.Store_ID = Tbl_Sales.Store_ID
+GROUP BY 	Store_Location),
+		
+Actual_Revenue
+AS
+(SELECT		Store_Location,
+		ROUND(SUM(Tbl_Products.Product_Price*Tbl_Sales.Units),0) AS Actual_Revenue
+FROM		Tbl_Sales
+JOIN		Tbl_Products
+ON		Tbl_Sales.Product_ID = Tbl_Products.Product_ID
+JOIN		Tbl_Stores
+ON		Tbl_Stores.Store_ID = Tbl_Sales.Store_ID
+LEFT JOIN	Tbl_Inventory
+ON		Tbl_Inventory.Store_ID = Tbl_Sales.Store_ID
+		AND Tbl_Inventory.Product_ID = Tbl_Sales.Product_ID
+WHERE		Tbl_Inventory.Stock_On_Hand > 0
+GROUP BY 	Store_Location),
+
+Lost_Revenue
+AS
+(SELECT		Store_Location,
+		ROUND(SUM(Tbl_Products.Product_Price*Tbl_Sales.Units),0) AS Lost_Revenue
+FROM		Tbl_Sales
+JOIN		Tbl_Products
+ON		Tbl_Sales.Product_ID = Tbl_Products.Product_ID
+JOIN		Tbl_Stores
+ON		Tbl_Stores.Store_ID = Tbl_Sales.Store_ID
+FULL JOIN	Tbl_Inventory
+ON		Tbl_Inventory.Store_ID = Tbl_Sales.Store_ID
+		AND Tbl_Inventory.Product_ID = Tbl_Sales.Product_ID
+WHERE		Tbl_Inventory.Stock_On_Hand is null 
+		OR
+		Tbl_Inventory.Stock_On_Hand = 0
+GROUP BY	Store_Location)
+
+-- Combine the Information to Calculate the Percentage of Revenue Lost
+SELECT		Potential_Revenue.Store_Location, 
+		Potential_Revenue, 
+		Actual_Revenue, 
+		Lost_Revenue,
+		ROUND((Lost_Revenue.Lost_Revenue/Potential_Revenue.Potential_Revenue    )*100,2) AS [%_Lost_Revenue]
+FROM		Potential_Revenue
+JOIN		Actual_Revenue
+ON		Potential_Revenue.Store_Location = Actual_revenue.Store_Location
+Join		Lost_Revenue
+ON		Potential_Revenue.Store_Location = Lost_Revenue.Store_Location
+ORDER BY 	Store_Location
+```
+
+|Store_Location|Potential_Revenue|Actual_Revenue|Lost_Revenue|%_Lost_Revenue|
+|--------------|-----------------|--------------|------------|--------------|
+|Airport|1289723|1267823|21899|1.7|
+|Commercial|3279139|3208312|70828|2.16|
+|Downtown|8219596|7963937|255659|3.11|
+|Residential|1656114|1570875|85239|5.15|
+
+- From the analysis above, the percentage of lost revenue in Airport is relatively low (1.7%), suggesting a minor impact on revenue due to product unavailability. This location experienced the lowest percentage of lost revenue among the listed locations.
+- The percentage of lost revenue in Commercial is moderate (2.16%), indicating a moderate impact on revenue. While not the lowest, the impact is still manageable.
+- In Downtown location, the percentage of lost revenue is relatively high (3.11%), indicating a more significant impact on overall revenue. 
+- Residential location has the highest percentage of lost revenue (5.15%), suggesting a substantial impact on revenue
+- Across all locations, the actual revenue falls short of potential revenue, indicating that revenue could have been higher if all products were available.
+
+**4. How much money is tied up in inventory at the toy stores? How long will it last?**
+
+This involve an analysis of the financial resources that are currently invested in the inventory of Maven Toys stores and an estimation of how long it takes, on average, to sell and replace that inventory.
+
+The first part of the question aims to identify the total monetary value of the toys and products that are currently held in the inventory of the toy stores. To provide an answer to the first part of the question, SQL query that performs a comprehensive valuation of the inventory by multiplying the cost per unit of each individual product by its corresponding quantity in stock was executed.
+
+```SQL
+--Total Monetary Value
+
+SELECT	ROUND(SUM(Tbl_Products.Product_Cost * Tbl_Inventory.Stock_On_Hand),0) AS Money_Tied_Up_In_Inventory
+FROM	Tbl_Inventory
+JOIN	Tbl_Products
+ON	Tbl_Inventory.Product_ID = Tbl_Products.Product_ID
+```
+|Money_Tied_Up_In_Inventory|
+|----------|
+|300210|
+
+- From the above analysis, the money tied up in inventory at toy stores is $300,210, it means that the total value of the inventory of products in toy stores is $300,210. This amount represents the capital invested in purchasing those products, and it is currently tied up in the form of inventory.
+
+The second part of the question explores the average number of days it takes for the toy stores to sell and replace their entire inventory. This was calculated by first calculating the total quantity of products currently in stock. Subsequently, this total quantity is divided by the average unit of product sold per day. This calculation aids in determining the number of days it takes, on average, for the toy stores to completely sell their existing inventory and replenish it.
+
+```SQL
+--Average Number of Days it Takes for the Toy Stores to Sell and Replace their Entire Inventory
+
+WITH 
+
+Avg_Units
+AS
+(SELECT		ID,
+		AVG(Total_Unit_Sold_Per_Day) AS Avg_Units_Sold
+FROM
+(SELECT		[Date],
+		SUM(Tbl_Sales.Units) AS Total_Unit_Sold_Per_Day,
+		ROW_NUMBER() OVER(PARTITION BY [Date] ORDER BY [Date]) AS ID
+FROM 		Tbl_Sales
+GROUP BY 	[Date]) AS Units_Sold 
+GROUP BY 	ID),
+
+Total_Stock
+AS
+(SELECT		ID,
+		SUM(Total_Stock_on_Hand) Total_Stock
+FROM
+(SELECT		Store_ID,
+		SUM(Tbl_Inventory.Stock_On_Hand) AS Total_Stock_on_Hand,
+		ROW_NUMBER() OVER (Partition BY Store_ID Order By Store_ID) AS ID
+FROM 		Tbl_Inventory
+GROUP BY  	Store_ID) AS Total_Stock_in_Store
+GROup BY 	ID)
+
+SELECT		(Total_Stock.Total_Stock/Avg_Units.Avg_Units_Sold) AS Avg_No_of_Days
+FROM 		Avg_Units
+JOIN 		Total_Stock
+ON 		Avg_units.ID = Total_Stock.ID
+```
+
+|Avg_No_of_Days|
+|----------|
+|17|
+
+Average number of days it takes for the toy stores to sell and replace their entire inventory is 17 days. This suggest that;
+
+- The toy stores are efficiently selling and replenishing their inventory.
+- The toy stores are responsive to customer demand. Products are moving swiftly, and the stores are able to restock and adapt to market demands in a timely manner.
+
+This is a positive indicator of efficient operations and responsiveness to market dynamics. It reflects well on the toy stores' ability to manage their inventory effectively and align with customer demand.
+
+## Recommendation
+- Segment customers based on preferences and purchasing behavior within each category. Tailor marketing messages and promotions to specific customer segments, enhancing the likelihood of increased sales and customer loyalty.
+- Develop targeted marketing campaigns for the top-performing categories to enhance visibility and customer engagement. Highlight unique selling propositions and promotions to drive sales within these categories.
+- Allocate additional resources, marketing efforts, and inventory management focus to capitalize on the high profitability of top-performing categories, such as Toys, Electronics, and Art & Crafts.
+- Given the dominance of Electronics in both Airport and Commercial locations, consider expanding the electronics product line, introducing new models, and leveraging promotions to further capitalize on customer demand in these areas.
+- Arts and Crafts is a strong performer in Downtown and Residential locations. Invest in promoting creative and artistic products, collaborate with local artists, and create thematic displays to enhance the appeal of this category.
+- Consider strategic investments in areas that show consistent positive growth. This could involve expanding product lines, entering new markets, or enhancing online presence based on identified growth opportunities.
+- Encourage collaboration between sales, marketing, and operations departments to ensure alignment in strategies and coordinated efforts.
+- Develop targeted marketing and sales strategies aligned with seasonal fluctuations, with a focus on maximizing revenue during peak months. Consider promotions, special events, or product launches during these periods.
+- Enhance inventory management practices to reduce instances of stockouts.
+- Maintain safety stock levels for high-demand products to act as a buffer during unexpected spikes in demand or delays in restocking. This ensures that even during fluctuations, essential products remain available for customers.
+- Strengthen collaboration with suppliers to ensure a seamless and timely replenishment process. Consider negotiating favorable terms for quick and reliable deliveries to support the efficient turnover.
+
+## Conclusion
+
+The detailed analysis of Maven Toys' sales and inventory data yields vital insights for strategic decision-making. Identifying profitable product categories, recognizing seasonal trends, addressing out-of-stock impacts, and optimizing inventory turnover pave the way for proactive responses to market dynamics. This positions Maven Toys for sustained success in the dynamic Mexican toy retail market.
+
+Thank You For Reading
+
+---
+
+I’m interested in a Data Analyst role in a reputable organization where I can showcase my skills, take more responsibilities, continue to learn, an organization that I can grow with, where my work will be highly beneficial to the organization.
+
+You can reach me on ochukoejemudaro@gmail.com or [Twitter](https://twitter.com/iamochuks/)
+
+THANK YOU
 
 
 
