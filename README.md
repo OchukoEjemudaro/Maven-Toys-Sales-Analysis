@@ -115,19 +115,21 @@ The first part of the question aims to identify and prioritize product categorie
 ```SQL
 --Profit by Product Category
 
-SELECT    Product_Category,
-		      ROUND(SUM(Product_Profit*Tbl_Sales.Units), 0) AS Total_Profit,
-ROUND     (SUM(Product_Profit*Tbl_Sales.Units)/
-          (SELECT SUM(Product_Profit*Tbl_Sales.Units) 
-FROM	    Tbl_Products
-		      JOIN	  Tbl_Sales
-ON	      Tbl_Products.Product_ID = Tbl_Sales.Product_ID)*100,2) AS     [%Profit]
-FROM	    Tbl_Products
-JOIN	    Tbl_Sales
-ON	      Tbl_Products.Product_ID = Tbl_Sales.Product_ID
-GROUP BY  Product_Category
-ORDER BY  SUM(Product_Profit*Tbl_Sales.Units) DESC
+SELECT		Product_Category,
+		ROUND(SUM(Product_Profit*Tbl_Sales.Units), 0) AS Total_Profit,
+		ROUND(SUM(Product_Profit*Tbl_Sales.Units)/(SELECT SUM(Product_Profit*Tbl_Sales.Units) 
+FROM		Tbl_Products
+JOIN		Tbl_Sales
+ON		Tbl_Products.Product_ID = Tbl_Sales.Product_ID)*100,2) AS     [%Profit]
+FROM		Tbl_Products
+JOIN		Tbl_Sales
+ON		Tbl_Products.Product_ID = Tbl_Sales.Product_ID
+GROUP BY	Product_Category
+ORDER BY	SUM(Product_Profit*Tbl_Sales.Units) DESC
 
+`- From the above analysis, Toys generated the highest profit among the mentioned categories, totaling $1,079,527, contributing 26.89% of the total profit. This indicates that the Toys category is a significant contributor to the overall profitability.
+- Electronics and Art & Crafts follow closely behind Toys in terms of profitability, with profits of $1,001,437 and $753,354, contributing 24.95% and 18.77% of the total profit respectively. These categories are also substantial contributors to the overall profit.
+- Games and Sports & Outdoors generated profits of $673,993 and $505,718, contributing 16.79% and 12.60% of the total profit respectively. While still contributing significantly to the overall profit, they are less profitable compared to Toys, Electronics, and Art & Crafts.
 
 
 
