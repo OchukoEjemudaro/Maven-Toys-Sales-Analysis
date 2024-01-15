@@ -287,7 +287,7 @@ FROM 		CTE
 ORDER BY 	Month_Number
 ```
 
-|Month_Name|2022|2023|% Change in Revenue|
+|Month_Name|2022|2023|% Change ln Revenue|
 |----------|----|----|-------------------|
 |January|542555|747196|37.72|
 |February|541352|722632|33.49|
