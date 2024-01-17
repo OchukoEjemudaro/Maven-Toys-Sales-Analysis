@@ -114,6 +114,8 @@ Creating relationships between tables is crucial for this analysis. It not only 
 
 Relationships enable the use of JOIN operations in queries, allowing data from multiple tables to be combined and retrieved in a single query. This leads to more efficient and streamlined data retrieval. By establishing relationships, it helps to avoid duplicating information in multiple tables and make the database more efficient in terms of storage and easier to maintain. Relationships provide a clear representation of the connections between different entities in the database. This makes the database structure more understandable and facilitates effective data modeling.
 
+For the complete data cleaning documentation, [Click Here](https://github.com/OchukoEjemudaro/Maven-Toys-Sales-Analysis/blob/main/Maven_Toy_Sales_Data_Cleaning_and_Procesing.pdf)
+
 # Data Analysis and Insight
 
 The objectives of this project are to find the product categories that bring in the most profits and check if these categories are consistently profitable in all store locations. Additionally, to discover patterns and trends in sales over different time periods, identify any potential loss of sales due to out-of-stock products at specific locations, and determine the amount of money tied up in inventory at the toy stores and how long it will last.
