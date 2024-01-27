@@ -120,7 +120,7 @@ For the complete data cleaning documentation, [Click Here](https://github.com/Oc
 
 The objectives of this project are to find the product categories that bring in the most profits and check if these categories are consistently profitable in all store locations. Additionally, to discover patterns and trends in sales over different time periods, identify any potential loss of sales due to out-of-stock products at specific locations, and determine the amount of money tied up in inventory at the toy stores and how long it will last.
 
-This analysis provides answers to the following questions
+This analysis provides answers to the following questions.
 
 **1. Which product categories drive the biggest profits? Is this the same across store locations?**
 
